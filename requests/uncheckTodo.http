@@ -1,0 +1,13 @@
+# @name add
+POST http://localhost:5000/api/todos HTTP/1.1
+content-type: application/json
+accept: application/json
+
+{
+  "title": "task-{{$guid}}"
+}
+
+###
+
+# @name uncheck
+POST http://localhost:5000/api/todos/{{add.response.body.id}}/uncheck HTTP/1.1

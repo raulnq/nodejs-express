@@ -1,0 +1,13 @@
+# @name add
+POST http://localhost:5000/api/todos HTTP/1.1
+content-type: application/json
+accept: application/json
+
+{
+  "title": "task-{{$guid}}"
+}
+
+###
+
+# @name list
+GET http://localhost:5000/api/todos?title={{add.response.body.title}}&completed=false&pageNumber=1&pageSize=10 HTTP/1.1
