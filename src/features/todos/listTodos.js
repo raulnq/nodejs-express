@@ -1,7 +1,15 @@
 import db from '../../config/database.js';
+import * as yup from 'yup';
+
+export const listTodosSchema = yup.object({
+  completed: yup.boolean().optional(),
+  title: yup.string().trim().optional(),
+  pageNumber: yup.number().integer().min(1).required(),
+  pageSize: yup.number().integer().min(1).max(100).required(),
+});
 
 export const listTodos = async (req, res) => {
-  const { completed, title } = req.query;
+  const { completed, title } = req.validatedQuery;
   let baseQuery = db('todos');
   if (completed !== undefined) {
     baseQuery = baseQuery.where('completed', completed === 'true');

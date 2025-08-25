@@ -1,9 +1,22 @@
 import db from '../../config/database.js';
+import {
+  ValidationError,
+  NotFoundError,
+} from '../../middlewares/errorHandler.js';
 
-export const ensureTodoFound = async (req, res, next) => {
-  const todo = await db('todos').where('id', req.params.todoId).first();
+export const ensureTodoFound = async (req, res, next, todoId) => {
+  const uuidv7Regex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (!uuidv7Regex.test(todoId)) {
+    return next(
+      new ValidationError(
+        'The provided todoId does not match the UUIDv7 format'
+      )
+    );
+  }
+  const todo = await db('todos').where('id', todoId).first();
   if (!todo) {
-    return res.status(404).json({ error: 'Todo not found' });
+    return next(new NotFoundError('Todo not found'));
   }
   req.todo = todo;
   next();
