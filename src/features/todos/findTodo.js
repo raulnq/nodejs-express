@@ -4,9 +4,10 @@ import {
   NotFoundError,
 } from '../../middlewares/errorHandler.js';
 
+const uuidv7Regex =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export const ensureTodoFound = async (req, res, next, todoId) => {
-  const uuidv7Regex =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   if (!uuidv7Regex.test(todoId)) {
     return next(
       new ValidationError(
