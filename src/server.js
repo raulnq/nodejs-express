@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import todosRoutes from './features/todos/routes.js';
+import healthRoutes from './routes/health.js';
 import { errorHandler, NotFoundError } from './middlewares/errorHandler.js';
 import morgan from 'morgan';
 import expressWinston from 'express-winston';
@@ -22,6 +23,7 @@ app.use(
     msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
   })
 );
+app.use('/health', healthRoutes);
 app.use('/api/todos', todosRoutes);
 app.all('/*splat', (req, res, next) => {
   const pathSegments = req.params.splat;
