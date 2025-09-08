@@ -18,7 +18,7 @@ router.use(
 async function checkSeq() {
   try {
     const res = await pTimeout(fetch(`${process.env.SEQ_UI_URL}/health`), {
-      milliseconds: parseInt(process.env.HEALTH_CHECK_TIMEOUT),
+      milliseconds: parseInt(process.env.HEALTH_CHECK_TIMEOUT) || 1000,
       message: 'Seq check timeout',
     });
     if (res.ok) return { status: 'up' };
@@ -37,7 +37,7 @@ async function checkSeq() {
 async function checkPostgres() {
   try {
     await pTimeout(db.raw('SELECT 1'), {
-      milliseconds: parseInt(process.env.HEALTH_CHECK_TIMEOUT),
+      milliseconds: parseInt(process.env.HEALTH_CHECK_TIMEOUT) || 1000,
       message: 'Postgres check timeout',
     });
     return { status: 'up' };
