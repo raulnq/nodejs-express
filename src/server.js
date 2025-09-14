@@ -6,6 +6,8 @@ import { errorHandler, NotFoundError } from './middlewares/errorHandler.js';
 import morgan from 'morgan';
 import expressWinston from 'express-winston';
 import logger from './config/logger.js';
+import helmet from 'helmet';
+import cors from 'cors';
 
 process.on('uncaughtException', err => {
   console.error(err.name, err.message);
@@ -14,9 +16,14 @@ process.on('uncaughtException', err => {
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.use(helmet());
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGIN,
+  })
+);
 app.use(express.json());
 app.use(morgan('dev'));
-
 app.use(
   expressWinston.logger({
     winstonInstance: logger,

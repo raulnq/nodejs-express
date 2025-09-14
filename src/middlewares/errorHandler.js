@@ -22,6 +22,12 @@ export class ValidationError extends AppError {
   }
 }
 
+export class UnauthorizedError extends AppError {
+  constructor(error) {
+    super(error, 'unauthorized', 401, 'Unauthorized');
+  }
+}
+
 // eslint-disable-next-line no-unused-vars
 export const errorHandler = (err, req, res, next) => {
   if (err instanceof AppError) {
