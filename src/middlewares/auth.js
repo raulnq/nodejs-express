@@ -25,11 +25,15 @@ export function verifyJWT(options) {
       return next(new UnauthorizedError('Missing authorization header'));
     }
 
-    const token = authHeader.split(' ')[1];
-    if (!token) {
-      return next(new UnauthorizedError('Invalid authorization header'));
+    const parts = authHeader.split(' ');
+    if (parts.length !== 2 || parts[0] !== 'Bearer' || !parts[1]) {
+      return next(
+        new UnauthorizedError(
+          'Invalid authorization header format. Expected "Bearer <token>"'
+        )
+      );
     }
-
+    const token = parts[1];
     jwt.verify(
       token,
       getKey,
