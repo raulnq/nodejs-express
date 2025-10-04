@@ -7,6 +7,36 @@ export const addTodoSchema = yup.object({
 });
 
 export const addTodo = async (req, res) => {
+  /*
+  #swagger.tags = ['Todos']
+  #swagger.summary = 'Create a new todo'
+  #swagger.description = 'Create a new todo item with a title and default completion status'
+  #swagger.requestBody = {
+    required: true,
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/addTodo'
+        }
+      }
+    }
+  }
+  #swagger.responses[201] = {
+    description: 'Todo created successfully',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/todo'
+        }
+      }
+    }
+  }
+  #swagger.responses[400] = {$ref: '#/components/responses/validationError'}
+  #swagger.responses[401] = {$ref: '#/components/responses/unauthorizedError'}
+  #swagger.security = [{
+    bearerAuth: []
+  }]
+  */
   const todo = {
     id: uuidv7(),
     title: req.body.title,

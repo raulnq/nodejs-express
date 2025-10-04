@@ -9,6 +9,36 @@ export const listTodosSchema = yup.object({
 });
 
 export const listTodos = async (req, res) => {
+  /*
+  #swagger.tags = ['Todos']
+  #swagger.summary = 'Get all todos'
+  #swagger.description = 'Retrieve a paginated list of todos with optional filtering by title and completion status'
+  #swagger.parameters['pageNumber'] = {$ref: '#/components/parameters/pageNumber'}
+  #swagger.parameters['pageSize'] = {$ref: '#/components/parameters/pageSize'}
+  #swagger.parameters['title'] = {
+        in: 'query',
+        description: 'Title of the todo item',
+        required: false,
+        type: 'string'
+      }
+  #swagger.parameters['completed'] = {
+        in: 'query',
+        description: 'Completion status of the todo item',
+        required: false,
+        type: 'boolean'
+      }
+  #swagger.responses[200] = {
+    description: 'Successfully retrieved todos',
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/todoList'
+        }
+      }
+    }
+  }
+  #swagger.responses[400] = {$ref: '#/components/responses/validationError'}
+  */
   const { completed, title } = req.validatedQuery;
   let baseQuery = db('todos');
   if (completed !== undefined) {

@@ -18,7 +18,8 @@
     "docker:down": "docker-compose down",
     "migrate:make": "knex migrate:make",
     "migrate:run": "knex migrate:latest",
-    "migrate:rollback": "knex migrate:rollback"
+    "migrate:rollback": "knex migrate:rollback",
+    "swagger": "node swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -51,6 +52,8 @@
     "morgan": "^1.10.1",
     "p-timeout": "^6.1.4",
     "pg": "^8.16.3",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "yup": "^1.7.0"
