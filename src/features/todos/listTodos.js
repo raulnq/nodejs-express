@@ -36,7 +36,7 @@ export const listTodos = async (req, res) => {
         }
       }
     }
-  },
+  }
   #swagger.responses[400] = {$ref: '#/components/responses/validationError'}
   */
   const { completed, title } = req.validatedQuery;
