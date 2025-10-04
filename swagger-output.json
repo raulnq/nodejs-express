@@ -1,0 +1,412 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "My API",
+    "description": "API Documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/api/todos/": {
+      "post": {
+        "tags": ["Todos"],
+        "summary": "Create a new todo",
+        "description": "Create a new todo item with a title and default completion status",
+        "responses": {
+          "201": {
+            "description": "Todo created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/validationError",
+            "description": "Bad Request"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorizedError",
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addTodo"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Todos"],
+        "summary": "Get all todos",
+        "description": "Retrieve a paginated list of todos with optional filtering by title and completion status",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pageNumber"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Title of the todo item",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "completed",
+            "in": "query",
+            "description": "Completion status of the todo item",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved todos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/todoList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/validationError",
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/todos/{todoId}": {
+      "get": {
+        "tags": ["Todos"],
+        "summary": "Get a specific todo by ID",
+        "description": "Retrieve a single todo item by its unique identifier",
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Todo item unique identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/validationError",
+            "description": "Bad Request"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundError",
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/todos/{todoId}/check": {
+      "post": {
+        "tags": ["Todos"],
+        "summary": "Mark a todo as completed",
+        "description": "Update a specific todo item to mark it as completed",
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Todo item unique identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo marked as completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/todo"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundError",
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/todos/{todoId}/uncheck": {
+      "post": {
+        "tags": ["Todos"],
+        "summary": "Mark a todo as not completed",
+        "description": "Update a specific todo item to mark it as not completed (uncheck)",
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Todo item unique identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo marked as not completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/todo"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundError",
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT Bearer token for user authentication"
+      }
+    },
+    "schemas": {
+      "todo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "01994462-a4d6-73bc-98fc-b861a38b1c0a"
+          },
+          "title": {
+            "type": "string",
+            "example": "title"
+          },
+          "completed": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2023-10-10T12:00:00Z"
+          }
+        }
+      },
+      "todoList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/todo"
+            }
+          },
+          "pageNumber": {
+            "type": "number",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "example": 10
+          },
+          "totalPages": {
+            "type": "number",
+            "example": 5
+          },
+          "totalItems": {
+            "type": "number",
+            "example": 50
+          }
+        }
+      },
+      "addTodo": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "title"
+          }
+        },
+        "required": ["title"]
+      },
+      "validationError": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "/problems/validation-error"
+          },
+          "title": {
+            "type": "string",
+            "example": "ValidationError"
+          },
+          "detail": {
+            "type": "array",
+            "example": ["Error description"],
+            "items": {
+              "type": "string"
+            }
+          },
+          "instance": {
+            "type": "string",
+            "example": "resource path"
+          },
+          "status": {
+            "type": "number",
+            "example": 400
+          }
+        }
+      },
+      "unauthorizedError": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "/problems/unauthorized"
+          },
+          "title": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "detail": {
+            "type": "string",
+            "example": "Error description"
+          },
+          "instance": {
+            "type": "string",
+            "example": "resource path"
+          },
+          "status": {
+            "type": "number",
+            "example": 401
+          }
+        }
+      },
+      "notFoundError": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "/problems/resource-not-found"
+          },
+          "title": {
+            "type": "string",
+            "example": "NotFoundError"
+          },
+          "detail": {
+            "type": "string",
+            "example": "Error description"
+          },
+          "instance": {
+            "type": "string",
+            "example": "resource path"
+          },
+          "status": {
+            "type": "number",
+            "example": 404
+          }
+        }
+      }
+    },
+    "parameters": {
+      "pageNumber": {
+        "name": "pageNumber",
+        "in": "query",
+        "description": "Page number for pagination",
+        "required": true,
+        "default": 1,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "pageSize": {
+        "name": "pageSize",
+        "in": "query",
+        "description": "Page size for pagination",
+        "required": true,
+        "default": 10,
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "responses": {
+      "unauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/unauthorizedError"
+            }
+          }
+        }
+      },
+      "validationError": {
+        "description": "Validation Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/validationError"
+            }
+          }
+        }
+      },
+      "notFoundError": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/notFoundError"
+            }
+          }
+        }
+      }
+    }
+  }
+}

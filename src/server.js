@@ -8,6 +8,7 @@ import expressWinston from 'express-winston';
 import logger from './config/logger.js';
 import helmet from 'helmet';
 import cors from 'cors';
+import swaggerRoutes from './routes/swagger.js';
 
 process.on('uncaughtException', err => {
   console.error(err.name, err.message);
@@ -30,6 +31,7 @@ app.use(
     msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
   })
 );
+app.use('/api-docs', swaggerRoutes);
 app.use('/health', healthRoutes);
 app.use('/api/todos', todosRoutes);
 app.all('/*splat', (req, res, next) => {
