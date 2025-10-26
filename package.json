@@ -19,7 +19,8 @@
     "migrate:make": "knex migrate:make",
     "migrate:run": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
-    "swagger": "node swagger.js"
+    "swagger": "node swagger.js",
+    "test": "cross-env NODE_ENV=test node --test tests"
   },
   "keywords": [],
   "author": "",
@@ -29,13 +30,15 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@commitlint/prompt-cli": "^19.8.1",
     "@eslint/js": "^9.32.0",
+    "@faker-js/faker": "^10.1.0",
     "cross-env": "^10.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "supertest": "^7.1.4"
   },
   "dependencies": {
     "@datalust/winston-seq": "^3.0.1",
