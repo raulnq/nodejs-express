@@ -1,0 +1,19 @@
+services:
+  postgres:
+    container_name: postgres-server
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+  seq:
+    container_name: seq-server
+    image: datalust/seq:latest
+    restart: unless-stopped
+    ports:
+      - '5341:5341'
+      - '8080:80'
+    environment:
+      ACCEPT_EULA: Y

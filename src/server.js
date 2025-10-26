@@ -1,11 +1,19 @@
-import express from 'express';
-import dotenv from 'dotenv';
-dotenv.config();
+import app from './app.js';
+
 const PORT = process.env.PORT || 3000;
-const app = express();
-app.get('/', (req, res) => {
-  res.send('Hello, World!!!');
+
+process.on('uncaughtException', err => {
+  console.error(err.name, err.message);
+  process.exit(1);
 });
-app.listen(PORT, () => {
+
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+process.on('unhandledRejection', err => {
+  console.error(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });

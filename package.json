@@ -13,7 +13,14 @@
     "start": "cross-env NODE_ENV=development node src/server.js",
     "dev": "cross-env NODE_ENV=development node --watch src/server.js",
     "prepare": "husky",
-    "commit": "commit"
+    "commit": "commit",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "migrate:make": "knex migrate:make",
+    "migrate:run": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback",
+    "swagger": "node swagger.js",
+    "test": "cross-env NODE_ENV=test node --test tests"
   },
   "keywords": [],
   "author": "",
@@ -23,15 +30,34 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@commitlint/prompt-cli": "^19.8.1",
     "@eslint/js": "^9.32.0",
+    "@faker-js/faker": "^10.1.0",
     "cross-env": "^10.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "supertest": "^7.1.4"
   },
   "dependencies": {
+    "@datalust/winston-seq": "^3.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-healthcheck": "^0.1.0",
+    "express-winston": "^4.2.0",
+    "helmet": "^8.1.0",
+    "http-problem-details": "^0.1.7",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
+    "knex": "^3.1.0",
+    "morgan": "^1.10.1",
+    "p-timeout": "^6.1.4",
+    "pg": "^8.16.3",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0",
+    "yup": "^1.7.0"
   }
 }
